@@ -72,8 +72,7 @@ passowd:
 
 TO GET ARGO CD PASSWORD:
 
-kubectl -n argocd get secret argocd-initial-admin-secret -o yaml 
-decode the above secret (echo -n "data" | base64 -d)
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
 
 The above command to provide password to access argo cd
