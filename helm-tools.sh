@@ -87,3 +87,25 @@ PATH: ./
 CLUSTER URL: https://kubernetes.default.svc
 NAMESPACE: default
 CREATE
+
+
+
+#STACK
+
+kubectl create namespace monitoring
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+
+helm install kube-prom-stack prometheus-community/kube-prometheus-stack \
+  --namespace monitoring
+
+
+kubectl get pods -n monitoring
+
+kubectl edit svc -n monitoring kube-prom-stack-grafana #(ClusterIP=LoadBalancer)
+
+kubectl get secret -n monitoring kube-prom-stack-grafana \
+  -o jsonpath="{.data.admin-password}" | base64 --decode
