@@ -12,41 +12,6 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 
 CHARTS WEBSITE LINK: https://artifacthub.io/
 
-DOWNLOADING CHARTS PROMETHEUS & GRAFANA:
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo add grafana https://grafana.github.io/helm-charts
-
-
-UPDATE HELM CHART REPOS:
-helm repo update
-helm repo list
-
-CREATE PROMETHEUS NAMESPACE:
-kubectl create namespace prometheus
-kubectl create namespace grafana
-kubectl get ns
-
-INSTALL PROMETHEUS:
-
-helm install prometheus prometheus-community/prometheus --namespace prometheus --set alertmanager.persistentVolume.storageClass="gp2" --set server.persistentVolume.storageClass="gp2"
-kubectl get all -n prometheus
-
-INSTALL GRAFANA:
-
-helm install grafana grafana/grafana --namespace grafana  --set adminPassword='RahamDevOps' --set  service.type=NodePort
-kubectl get all -n grafana
-kubectl get svc -n grafana
-
-NOTE: ALLOW PORTS ON SG
-
-Copy the EXTERNAL-IP and paste in browser
-
-Go to Grafana Dashboard → Add the Datasource → Select the Prometheus
-add the below url in Connection and save and test
-http://prometheus-server.prometheus.svc.cluster.local/
-
-Import Grafana dashboard from Grafana Labs
-grafana dashboard → new → Import → 15757 → load → select prometheus → import
 
 
 #ARGOCD INSTALLATION
@@ -108,4 +73,15 @@ kubectl get pods -n monitoring
 kubectl patch svc kube-prom-stack-grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 
 kubectl get secret -n monitoring kube-prom-stack-grafana \
-  -o jsonpath="{.data.admin-password}" | base64 --decode
+  -o jsonpath="{.data.admin-password}" | base64 --decode;echo
+
+NOTE: ALLOW PORTS ON SG
+
+Copy the EXTERNAL-IP and paste in browser
+
+Go to Grafana Dashboard → Add the Datasource → Select the Prometheus
+add the below url in Connection and save and test
+http://prometheus-server.prometheus.svc.cluster.local/
+
+Import Grafana dashboard from Grafana Labs
+grafana dashboard → new → Import → 15757 → load → select prometheus → import
