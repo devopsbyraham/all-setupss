@@ -105,7 +105,7 @@ helm install kube-prom-stack prometheus-community/kube-prometheus-stack \
 
 kubectl get pods -n monitoring
 
-kubectl edit svc -n monitoring kube-prom-stack-grafana #(ClusterIP=LoadBalancer)
+kubectl patch svc kube-prom-stack-grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 
 kubectl get secret -n monitoring kube-prom-stack-grafana \
   -o jsonpath="{.data.admin-password}" | base64 --decode
