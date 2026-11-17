@@ -466,10 +466,21 @@ kubectl get policyreport -A
 Start with `Audit`. Review the reports and fix existing workloads. Once
 the policy has been tested and exceptions have been reviewed, change:
 
+TEST
+
+``` bash
+kubectl -n media run awscli1   --image=amazon/aws-cli:latest   --restart=Never   --overrides='{"spec":{"serviceAccountName":"uploader"}}'   --env="AWS_ACCESS_KEY_ID=HDEUIFHIGFFUFUEAA"  --env="AWS_SECRET_ACCESS_KE=GDIUWFHIFEUWFGUIGFIGEGF "--command -- sleep 3600
+
+```
+
+
+
 ``` yaml
 validationActions:
   - Deny
 ```
+
+NOW IT WILL FAIL
 
 ### Important limitation
 
